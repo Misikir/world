@@ -10,8 +10,13 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
     "@mapbox/mapbox-gl-draw": "^1.4.3",
+    "@mui/material": "^5.14.12",
+    "@turf/area": "^6.5.0",
     "@turf/turf": "^6.5.0",
+    "firebase": "^10.4.0",
     "geojson": "^0.5.0",
     "mapbox-gl": "^2.15.0",
     "react": "^18.2.0",
