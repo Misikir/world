@@ -33,23 +33,20 @@ function Mapbox() {
   const [selectedFeatures, setSelectedFeatures] = useState<any>([]);
 
   useEffect(() => {
-    async function fetchData() {
-      const response = await getPolygon(db);
-      setFeatures(response);
-      console.log("polygon", response);
-    }
-    fetchData();
+    const unsubscribe = getPolygon(db, setFeatures);
+
+    // Cleanup function to unsubscribe when the component unmounts
+    return () => {
+      unsubscribe();
+    };
   }, []);
 
   const onUpdate = useCallback(async (e: any) => {
-    console.log("e", e);
     await setPolygon(db, e.features[0]);
   }, []);
 
   const onDelete = useCallback(
     async (e: any) => {
-      console.log("e", e);
-
       const id = e?.features?.[0].id;
 
       if (!id) {
@@ -77,14 +74,10 @@ function Mapbox() {
             ? prevSelectedFeatures.filter((id: any) => id !== id)
             : [...prevSelectedFeatures, id]
         );
-
-        onDelete("any");
       }
     },
     [selectedFeatures]
   );
-
-  console.log("hoveredFeature", selectedFeatures);
 
   return (
     <div className={styles.mapboxWrapper}>

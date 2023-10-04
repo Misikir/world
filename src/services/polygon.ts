@@ -2,21 +2,25 @@ import type { Firestore } from "firebase/firestore";
 import {
   collection,
   doc,
-  getDocs,
+  onSnapshot,
   setDoc,
   deleteDoc,
 } from "firebase/firestore";
 import { GeoJSONPolygon } from "../models/polygon";
 
-export async function getPolygon(db: Firestore) {
+export function getPolygon(db: Firestore, setPolygonList: any) {
   const polygonCol = collection(db, "polygon");
-  const polygonSnapshot = await getDocs(polygonCol);
-  const polygonList: GeoJSONPolygon[] = polygonSnapshot.docs.map(
-    (doc) => convertFromFirestoreData(doc.data()) as GeoJSONPolygon
-  );
-  return polygonList;
-}
 
+  // Subscribe to real-time changes using onSnapshot
+  const unsubscribe = onSnapshot(polygonCol, (snapshot) => {
+    const updatedPolygonList: GeoJSONPolygon[] = snapshot.docs.map(
+      (doc) => convertFromFirestoreData(doc.data()) as GeoJSONPolygon
+    );
+    setPolygonList(updatedPolygonList);
+  });
+
+  return unsubscribe;
+}
 export async function setPolygon(db: Firestore, polygon: GeoJSONPolygon) {
   console.log("setPolygon", JSON.stringify(polygon));
   const polygonRef = doc(db, "polygon", polygon.id);
