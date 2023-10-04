@@ -1,27 +1,17 @@
-# React + TypeScript + Vite
+# softpositive 👉 [ Soft-Map](https://soft-world.vercel.app/)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+![Screen](./screen.jpg?raw=true "Screenshot")
 
-Currently, two official plugins are available:
+## Task
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Create an application for drawing polygons on a "mapbox" map engine using React.
 
-## Expanding the ESLint configuration
+Application features:
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- Draw one or more polygon(s) of any shape on the map using mouse.
 
-- Configure the top-level `parserOptions` property like this:
+- Automatically save the polygon to Firebase storage.
 
-```js
-   parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-   },
-```
+- When the page is reloaded, all drawn polygons from the database are drawn.
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+- Each drawn polygon can be deleted with a "Delete" button
