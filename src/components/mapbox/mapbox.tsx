@@ -15,6 +15,7 @@ import { DrawControl } from "./draw-control";
 import { GeoJSONPolygon } from "../../models/polygon";
 import { getPolygon, removePolygon, setPolygon } from "../../services/polygon";
 import styles from "./mapbox.module.scss";
+import { DeleteControl } from "./delete-btn";
 const token = import.meta.env.VITE_MAPBOX_TOKEN;
 
 const layerStyle: LayerProps = {
@@ -119,12 +120,11 @@ function Mapbox() {
           displayControlsDefault={false}
           controls={{
             polygon: true,
-            trash: true,
           }}
           onCreate={onUpdate}
           onUpdate={onUpdate}
-          onDelete={onDelete}
         />
+        <DeleteControl onDelete={onDelete} />
         <ScaleControl />
       </Map>
     </div>

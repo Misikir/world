@@ -3,7 +3,11 @@
   width: 100vw;
   overflow: hidden;
 }
-.btn {
+.deleteBtn {
   position: absolute;
-  top: 0;
+  top: 42px;
+  left: 9px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
 }
