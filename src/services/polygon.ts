@@ -1,15 +1,15 @@
 import type { Firestore } from 'firebase/firestore';
 import {
-  convertToFirestoreData,
-  convertFromFirestoreData,
-} from '../utilities/converter';
-import {
   collection,
+  deleteDoc,
   doc,
   onSnapshot,
   setDoc,
-  deleteDoc,
 } from 'firebase/firestore';
+import {
+  convertFromFirestoreData,
+  convertToFirestoreData,
+} from '../utilities/converter';
 
 import { GeoJSONPolygon } from '../models/polygon';
 

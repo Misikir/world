@@ -1,3 +1,4 @@
+import { useCallback, useEffect, useState } from 'react';
 import type { LayerProps } from 'react-map-gl';
 import Map, {
   GeolocateControl,
@@ -7,15 +8,15 @@ import Map, {
   Source,
 } from 'react-map-gl';
 
-import 'mapbox-gl/dist/mapbox-gl.css';
-import { useCallback, useEffect, useState } from 'react';
 import { db } from '../../firebase';
-import { DrawControl } from './draw-control';
-
 import { GeoJSONPolygon } from '../../models/polygon';
 import { getPolygon, removePolygon, setPolygon } from '../../services/polygon';
 import { DeleteControl } from './delete-btn';
+import { DrawControl } from './draw-control';
+
+import 'mapbox-gl/dist/mapbox-gl.css';
 import styles from './mapbox.module.scss';
+
 const token = import.meta.env.VITE_MAPBOX_TOKEN;
 
 const layerStyle: LayerProps = {

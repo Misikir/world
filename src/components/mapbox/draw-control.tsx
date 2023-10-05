@@ -1,9 +1,8 @@
 import MapboxDraw from '@mapbox/mapbox-gl-draw';
-import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
-
+import type { ControlPosition } from 'react-map-gl';
 import { useControl } from 'react-map-gl';
 
-import type { ControlPosition } from 'react-map-gl';
+import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
 
 type DrawControlProps = ConstructorParameters<typeof MapboxDraw>[0] & {
   position?: ControlPosition;

@@ -1,4 +1,4 @@
-# softpositive 👉 [ Soft-Map](https://soft-world.vercel.app/)
+# Softpositive 👉 [ Soft-Map](https://soft-world.vercel.app/)
 
 ![Screen](./screen.jpg?raw=true 'Screenshot')
 
