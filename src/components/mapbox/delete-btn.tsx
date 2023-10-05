@@ -1,4 +1,4 @@
-import styles from "./mapbox.module.scss";
+import styles from './mapbox.module.scss';
 export function DeleteControl({ onDelete }: any) {
   return (
     <button

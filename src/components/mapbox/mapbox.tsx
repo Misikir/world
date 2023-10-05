@@ -1,31 +1,31 @@
-import type { LayerProps } from "react-map-gl";
+import type { LayerProps } from 'react-map-gl';
 import Map, {
   GeolocateControl,
   Layer,
   NavigationControl,
   ScaleControl,
   Source,
-} from "react-map-gl";
+} from 'react-map-gl';
 
-import "mapbox-gl/dist/mapbox-gl.css";
-import { useCallback, useEffect, useState } from "react";
-import { db } from "../../firebase";
-import { DrawControl } from "./draw-control";
+import 'mapbox-gl/dist/mapbox-gl.css';
+import { useCallback, useEffect, useState } from 'react';
+import { db } from '../../firebase';
+import { DrawControl } from './draw-control';
 
-import { GeoJSONPolygon } from "../../models/polygon";
-import { getPolygon, removePolygon, setPolygon } from "../../services/polygon";
-import styles from "./mapbox.module.scss";
-import { DeleteControl } from "./delete-btn";
+import { GeoJSONPolygon } from '../../models/polygon';
+import { getPolygon, removePolygon, setPolygon } from '../../services/polygon';
+import { DeleteControl } from './delete-btn';
+import styles from './mapbox.module.scss';
 const token = import.meta.env.VITE_MAPBOX_TOKEN;
 
 const layerStyle: LayerProps = {
-  id: "data",
-  type: "fill",
-  source: "data", // reference the data source
+  id: 'data',
+  type: 'fill',
+  source: 'data', // reference the data source
   layout: {},
   paint: {
-    "fill-color": "#0080ff", // blue color fill
-    "fill-opacity": 0.5,
+    'fill-color': '#0080ff', // blue color fill
+    'fill-opacity': 0.5,
   },
 };
 
@@ -35,7 +35,6 @@ function Mapbox() {
 
   useEffect(() => {
     const unsubscribe = getPolygon(db, setFeatures);
-
     // Cleanup function to unsubscribe when the component unmounts
     return () => {
       unsubscribe();
@@ -58,7 +57,7 @@ function Mapbox() {
         await removePolygon(db, id);
       }
     },
-    [selectedFeatures]
+    [selectedFeatures],
   );
 
   const handleFeatureClick = useCallback(
@@ -73,11 +72,11 @@ function Mapbox() {
         setSelectedFeatures((prevSelectedFeatures: any) =>
           isSelected
             ? prevSelectedFeatures.filter((id: any) => id !== id)
-            : [...prevSelectedFeatures, id]
+            : [...prevSelectedFeatures, id],
         );
       }
     },
-    [selectedFeatures]
+    [selectedFeatures],
   );
 
   return (
@@ -90,13 +89,14 @@ function Mapbox() {
         }}
         mapboxAccessToken={token}
         onClick={handleFeatureClick}
-        interactiveLayerIds={["data"]}
+        onTouchStart={handleFeatureClick}
+        interactiveLayerIds={['data']}
         mapStyle="mapbox://styles/mapbox/satellite-v9"
       >
         <Source
           type="geojson"
           data={{
-            type: "FeatureCollection",
+            type: 'FeatureCollection',
             features: [...features] as any,
           }}
         >
@@ -105,11 +105,11 @@ function Mapbox() {
             id="selected-features"
             type="fill"
             paint={{
-              "fill-color": "#ff0000", // Red color for selected features
-              "fill-opacity": 0.5,
+              'fill-color': '#ff0000', // Red color for selected features
+              'fill-opacity': 0.5,
             }}
             source="polygon-source"
-            filter={["in", "id", ...selectedFeatures]}
+            filter={['in', 'id', ...selectedFeatures]}
           />
         </Source>
 

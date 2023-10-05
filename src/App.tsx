@@ -1,8 +1,8 @@
-import "./App.css";
+import './App.css';
 
-import { lazy } from "react";
+import { lazy } from 'react';
 
-const Mapbox = lazy(() => import("./components/mapbox/mapbox"));
+const Mapbox = lazy(() => import('./components/mapbox/mapbox'));
 function App() {
   return (
     <>

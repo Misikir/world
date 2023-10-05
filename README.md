@@ -1,6 +1,6 @@
 # softpositive 👉 [ Soft-Map](https://soft-world.vercel.app/)
 
-![Screen](./screen.jpg?raw=true "Screenshot")
+![Screen](./screen.jpg?raw=true 'Screenshot')
 
 ## Task
 
