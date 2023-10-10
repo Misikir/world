@@ -24,6 +24,7 @@ import { DrawControl } from './draw-control';
 
 import 'mapbox-gl/dist/mapbox-gl.css';
 import styles from './mapbox.module.scss';
+import { ErrorBoundary } from '../../utilities/error-boundary';
 
 const token = import.meta.env.VITE_MAPBOX_TOKEN;
 
@@ -97,52 +98,54 @@ function Mapbox() {
 
   return (
     <div className={styles.mapboxWrapper}>
-      <Map
-        initialViewState={{
-          longitude: 91.874,
-          latitude: 42.76,
-          zoom: 12,
-        }}
-        mapboxAccessToken={token}
-        onClick={handleFeatureClick}
-        onTouchStart={handleFeatureClick}
-        interactiveLayerIds={['data']}
-        mapStyle="mapbox://styles/mapbox/satellite-v9"
-      >
-        <Source
-          type="geojson"
-          data={{
-            type: 'FeatureCollection',
-            features: [...features],
+      <ErrorBoundary>
+        <Map
+          initialViewState={{
+            longitude: 91.874,
+            latitude: 42.76,
+            zoom: 12,
           }}
+          mapboxAccessToken={token}
+          onClick={handleFeatureClick}
+          onTouchStart={handleFeatureClick}
+          interactiveLayerIds={['data']}
+          mapStyle="mapbox://styles/mapbox/satellite-v9"
         >
-          <Layer {...layerStyle} />
-          <Layer
-            id="selected-features"
-            type="fill"
-            paint={{
-              'fill-color': '#ff0000', // Red color for selected features
-              'fill-opacity': 0.5,
+          <Source
+            type="geojson"
+            data={{
+              type: 'FeatureCollection',
+              features: [...features],
             }}
-            source="polygon-source"
-            filter={['in', 'id', ...selectedFeatures]}
-          />
-        </Source>
+          >
+            <Layer {...layerStyle} />
+            <Layer
+              id="selected-features"
+              type="fill"
+              paint={{
+                'fill-color': '#ff0000', // Red color for selected features
+                'fill-opacity': 0.5,
+              }}
+              source="polygon-source"
+              filter={['in', 'id', ...selectedFeatures]}
+            />
+          </Source>
 
-        <NavigationControl />
-        <GeolocateControl />
-        <DrawControl
-          position="top-left"
-          displayControlsDefault={false}
-          controls={{
-            polygon: true,
-          }}
-          onCreate={onUpdate}
-          onUpdate={onUpdate}
-        />
-        <DeleteControl onDelete={onDelete} />
-        <ScaleControl />
-      </Map>
+          <NavigationControl />
+          <GeolocateControl />
+          <DrawControl
+            position="top-left"
+            displayControlsDefault={false}
+            controls={{
+              polygon: true,
+            }}
+            onCreate={onUpdate}
+            onUpdate={onUpdate}
+          />
+          <DeleteControl onDelete={onDelete} />
+          <ScaleControl />
+        </Map>
+      </ErrorBoundary>
     </div>
   );
 }
