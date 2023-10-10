@@ -101,7 +101,7 @@ function Mapbox() {
       <ErrorBoundary>
         <Map
           initialViewState={{
-            longitude: 91.874,
+            longitude: -91.874,
             latitude: 42.76,
             zoom: 12,
           }}
