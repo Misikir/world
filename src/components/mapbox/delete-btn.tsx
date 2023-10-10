@@ -1,8 +1,14 @@
+import { MapLayerMouseEvent } from 'react-map-gl';
 import styles from './mapbox.module.scss';
-export function DeleteControl({ onDelete }: any) {
+import { MouseEventHandler } from 'react';
+export function DeleteControl({
+  onDelete,
+}: {
+  onDelete: (evt: MapLayerMouseEvent) => void;
+}) {
   return (
     <button
-      onClick={onDelete}
+      onClick={onDelete as unknown as MouseEventHandler<HTMLButtonElement>}
       className={`${styles.deleteBtn} mapbox-gl-draw_ctrl-draw-btn mapbox-gl-draw_trash `}
       title="Delete"
     ></button>

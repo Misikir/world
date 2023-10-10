@@ -4,13 +4,14 @@ import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
 
 // Your web app's Firebase configuration
+// use vite env to import
 const firebaseConfig = {
-  apiKey: 'AIzaSyAXd-bAXN8ufoN34AakPRIxhzaJJo_0dqE',
-  authDomain: 'world-hello-map.firebaseapp.com',
-  projectId: 'world-hello-map',
-  storageBucket: 'world-hello-map.appspot.com',
-  messagingSenderId: '129685674664',
-  appId: '1:129685674664:web:a9098f0a2c9e6ef51a809d',
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
 };
 
 // Initialize Firebase
