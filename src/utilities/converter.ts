@@ -1,26 +1,22 @@
-import { GeoJSONPolygon } from '../models/polygon';
+import { MapboxFeature, Polygon } from '../models/polygon';
+
 // Function to convert GeoJSONPolygon to Firestore-compatible data
-export function convertToFirestoreData(geoJSONPolygon: GeoJSONPolygon) {
+export function convertToFirestoreData(geoJSONPolygon: MapboxFeature): Polygon {
   return {
     id: geoJSONPolygon.id,
-    type: geoJSONPolygon.type,
-    properties: { id: geoJSONPolygon.id },
-    geometry: {
-      coordinates: JSON.stringify(geoJSONPolygon.geometry.coordinates), // Convert coordinates to JSON string
-      type: geoJSONPolygon.geometry.type,
-    },
+    coordinates: JSON.stringify(geoJSONPolygon.geometry?.coordinates), // C
   };
 }
 
 // Function to revert Firestore data back to GeoJSONPolygon
-export function convertFromFirestoreData(data: any): GeoJSONPolygon {
+export function convertFromFirestoreData(data: Polygon): MapboxFeature {
   return {
     id: data.id,
-    type: data.type,
+    type: 'Feature',
     properties: { id: data.id },
     geometry: {
-      coordinates: JSON.parse(data.geometry.coordinates), // Parse the JSON string back to an array
-      type: data.geometry.type,
+      coordinates: JSON.parse(data.coordinates), // Parse the JSON string back to an array
+      type: 'Polygon',
     },
   };
 }

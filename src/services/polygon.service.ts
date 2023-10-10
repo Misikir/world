@@ -11,15 +11,18 @@ import {
   convertToFirestoreData,
 } from '../utilities/converter';
 
-import { GeoJSONPolygon } from '../models/polygon';
+import { MapboxFeature, Polygon } from '../models/polygon';
 
-export function getPolygon(db: Firestore, setPolygonList: any) {
+export function getPolygon(
+  db: Firestore,
+  setPolygonList: React.Dispatch<React.SetStateAction<MapboxFeature[]>>,
+) {
   const polygonCol = collection(db, 'polygon');
 
   // Subscribe to real-time changes using onSnapshot
   const unsubscribe = onSnapshot(polygonCol, (snapshot) => {
-    const updatedPolygonList: GeoJSONPolygon[] = snapshot.docs.map(
-      (doc) => convertFromFirestoreData(doc.data()) as GeoJSONPolygon,
+    const updatedPolygonList = snapshot.docs.map((doc) =>
+      convertFromFirestoreData(doc.data() as Polygon),
     );
     setPolygonList(updatedPolygonList);
   });
@@ -27,10 +30,15 @@ export function getPolygon(db: Firestore, setPolygonList: any) {
   return unsubscribe;
 }
 
-export async function setPolygon(db: Firestore, polygon: GeoJSONPolygon) {
-  console.log('setPolygon', JSON.stringify(polygon));
-  const polygonRef = doc(db, 'polygon', polygon.id);
-  await setDoc(polygonRef, convertToFirestoreData(polygon));
+export async function setPolygon(db: Firestore, feature: MapboxFeature) {
+  try {
+    console.log('setPolygon', feature);
+
+    const polygonRef = doc(db, 'polygon', feature.id as string);
+    await setDoc(polygonRef, convertToFirestoreData(feature));
+  } catch (error) {
+    console.error('Error setting polygon:', error);
+  }
 }
 
 export async function removePolygon(db: Firestore, id: string) {

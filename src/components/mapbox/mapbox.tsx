@@ -1,5 +1,9 @@
 import { useCallback, useEffect, useState } from 'react';
-import type { LayerProps } from 'react-map-gl';
+import type {
+  LayerProps,
+  MapLayerMouseEvent,
+  MapLayerTouchEvent,
+} from 'react-map-gl';
 import Map, {
   GeolocateControl,
   Layer,
@@ -9,8 +13,12 @@ import Map, {
 } from 'react-map-gl';
 
 import { db } from '../../firebase';
-import { GeoJSONPolygon } from '../../models/polygon';
-import { getPolygon, removePolygon, setPolygon } from '../../services/polygon';
+import { MapboxFeature } from '../../models/polygon';
+import {
+  getPolygon,
+  removePolygon,
+  setPolygon,
+} from '../../services/polygon.service';
 import { DeleteControl } from './delete-btn';
 import { DrawControl } from './draw-control';
 
@@ -31,8 +39,10 @@ const layerStyle: LayerProps = {
 };
 
 function Mapbox() {
-  const [features, setFeatures] = useState<GeoJSONPolygon[]>([]);
-  const [selectedFeatures, setSelectedFeatures] = useState<any>([]);
+  const [features, setFeatures] = useState<MapboxFeature[]>([]);
+  const [selectedFeatures, setSelectedFeatures] = useState<string[]>([]);
+
+  console.log(features);
 
   useEffect(() => {
     const unsubscribe = getPolygon(db, setFeatures);
@@ -42,37 +52,42 @@ function Mapbox() {
     };
   }, []);
 
-  const onUpdate = useCallback(async (e: any) => {
-    await setPolygon(db, e.features[0]);
+  const onUpdate = useCallback(async (e: MapLayerMouseEvent) => {
+    console.log(e);
+    if (e?.features?.[0]) {
+      await setPolygon(db, e.features[0] as MapboxFeature);
+    }
   }, []);
 
   const onDelete = useCallback(
-    async (e: any) => {
+    async (e: MapLayerMouseEvent) => {
       const id = e?.features?.[0].id;
 
+      console.log(id, selectedFeatures);
+
       if (!id) {
-        selectedFeatures.forEach(async (id: any) => {
-          await removePolygon(db, id);
+        selectedFeatures.forEach(async (selected) => {
+          await removePolygon(db, selected as string);
         });
       } else {
-        await removePolygon(db, id);
+        await removePolygon(db, id as string);
       }
     },
     [selectedFeatures],
   );
 
   const handleFeatureClick = useCallback(
-    (event: any) => {
-      const id = event.features[0]?.properties.id;
+    (event: MapLayerMouseEvent | MapLayerTouchEvent) => {
+      const id = event?.features?.[0].properties?.id;
 
       if (id) {
         // Check if the clicked feature is already selected
         const isSelected = selectedFeatures.includes(id);
 
         // Update the selected features list based on selection or deselection
-        setSelectedFeatures((prevSelectedFeatures: any) =>
+        setSelectedFeatures((prevSelectedFeatures: string[]) =>
           isSelected
-            ? prevSelectedFeatures.filter((id: any) => id !== id)
+            ? prevSelectedFeatures.filter((selected) => selected !== id)
             : [...prevSelectedFeatures, id],
         );
       }
@@ -84,7 +99,7 @@ function Mapbox() {
     <div className={styles.mapboxWrapper}>
       <Map
         initialViewState={{
-          longitude: -91.874,
+          longitude: 91.874,
           latitude: 42.76,
           zoom: 12,
         }}
@@ -98,7 +113,7 @@ function Mapbox() {
           type="geojson"
           data={{
             type: 'FeatureCollection',
-            features: [...features] as any,
+            features: [...features],
           }}
         >
           <Layer {...layerStyle} />

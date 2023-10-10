@@ -1,10 +1,13 @@
-interface Geometry {
-  coordinates: string; // A multi-dimensional array of coordinates which will be stored in firebase as a string
-  type: 'Polygon';
-}
-export interface GeoJSONPolygon {
-  id: string;
-  type: 'Feature';
-  properties: any;
-  geometry: Geometry;
-}
+import { Feature, GeoJsonProperties, Polygon as MultiPolygon } from 'geojson';
+import { MapMouseEvent, MapboxGeoJSONFeature } from 'react-map-gl';
+
+export type MapLayerMouseEvent = MapMouseEvent & {
+  features: MapboxGeoJSONFeature[];
+};
+
+export type MapboxFeature = Feature<MultiPolygon, GeoJsonProperties>;
+
+export type Polygon = {
+  id?: string | number;
+  coordinates: string;
+};
